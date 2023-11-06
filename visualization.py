@@ -15,11 +15,11 @@ def visualize_dataset(dataset : Dataset):
     for i, idx in enumerate(sample_idxs):
         img, msk = dataset[idx]
 
-        img = Image.fromarray(img.astype('uint8'))
+        img = Image.fromarray(img.numpy().transpose((1,2,0)).astype('uint8'))
         ax[0,i].imshow(img)
         ax[0,i].axis('off')
 
-        msk = Image.fromarray(msk.astype('uint8'))
+        msk = Image.fromarray(msk.numpy().astype('uint8'))
         ax[1,i].imshow(msk)
         ax[1,i].axis('off')
     

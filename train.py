@@ -48,6 +48,8 @@ def mean_teacher_training(student : UNET, teacher : UNET, hyperparams : dict):
             with torch.no_grad():
                 for s_param, t_param in zip(student.parameters(), teacher.parameters()):
                     t_param.data = alpha * t_param.data + (1 - alpha) * s_param.data
+            
+            if idx==1: exit()
 
         if True:#epoch % 1 == 0:
             
