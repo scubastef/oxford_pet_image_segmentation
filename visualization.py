@@ -3,7 +3,7 @@ from torch.utils.data import Dataset
 import matplotlib.pyplot as plt
 from PIL import Image
 from dataset import OxfordPetDataset
-from transforms import transform
+from transforms import train_transform
 
 
 def visualize_dataset(dataset : Dataset):
@@ -30,5 +30,5 @@ def visualize_dataset(dataset : Dataset):
 if __name__ == '__main__':
     img_dir = '/Users/stefanswandel/PythonProjects/oxford-iiit-pet/images'
     msk_dir = '/Users/stefanswandel/PythonProjects/oxford-iiit-pet/annotations/trimaps'
-    ds = OxfordPetDataset(img_dir, msk_dir, transform=transform, set_type='val')
+    ds = OxfordPetDataset(img_dir, msk_dir, transform=train_transform, set_type='val')
     visualize_dataset(ds)

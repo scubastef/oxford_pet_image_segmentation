@@ -1,7 +1,8 @@
 import os
 from PIL import Image
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, DataLoader
 import numpy as np
+import torch
 
 
 class OxfordPetDataset(Dataset):
@@ -27,21 +28,13 @@ class OxfordPetDataset(Dataset):
         mask_path = os.path.join(self._mask_dir, self._image_names[index].replace('jpg', 'png'))
 
         image = np.array(Image.open(image_path).convert('RGB'), dtype=np.float32)
-        mask = np.array(Image.open(mask_path), dtype=np.float32)
+        mask = np.array(Image.open(mask_path)) - 1
 
         if self._transform is not None:
             augmentations = self._transform(image=image, mask=mask)
-            image, mask = augmentations['image'], augmentations['mask']
+            image, mask = augmentations['image'], augmentations['mask'].to(dtype=torch.long)
 
-        if self._has_mask is not None and not self._has_mask[index]:
-            mask = 0
+        if self._has_mask is not None:
+            return image, mask, self._has_mask[index]
 
-        
         return image, mask
-    
-if __name__ == '__main__':
-    img_dir = '/Users/stefanswandel/PythonProjects/oxford-iiit-pet/images'
-    msk_dir = '/Users/stefanswandel/PythonProjects/oxford-iiit-pet/annotations/trimaps'
-    ds = OxfordPetDataset(img_dir, msk_dir, set_type='train', frac_labeled=0.5)
-    i, m = ds.__getitem__(5)
-    print(m)

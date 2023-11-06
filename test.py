@@ -1,6 +1,6 @@
 from network import *
 import torch
-from utils import *
+from losses import *
 from dataset import *
 from visualization import *
 
